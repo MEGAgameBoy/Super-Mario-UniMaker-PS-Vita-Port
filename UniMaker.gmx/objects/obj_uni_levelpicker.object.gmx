@@ -25,6 +25,32 @@
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>///Create the level directory
+
+if !directory_exists("\courses\")
+{
+ directory_create("\courses\");
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>///Variables
 file_choice = 0;
 fade = 0;
@@ -73,8 +99,9 @@ fname = "";
           <argument>
             <kind>1</kind>
             <string>///List files
-var lister = file_find_first("\courses\*.unis", fa_directory);
 
+//list saved levels
+var lister = file_find_first("/courses/*.univ", fa_directory);
 while (lister != "")
 {
  ds_list_add(file_list, + lister)//add the current file to the list
@@ -83,38 +110,22 @@ while (lister != "")
 }
 file_find_close();//finish
 
-show_debug_message(string(file_index));
+show_debug_message(working_directory);
+
+//List customs levels
+var lister = file_find_first(working_directory + "/courses/*.unis", fa_directory);
+while (lister != "")
+{
+ ds_list_add(file_list, + lister)
+ file_index++;
+ lister = file_find_next();
+}
+file_find_close();//finish
 
 //Pages initialisation
 for(var i=9; i &lt; file_index; i+=9)
 {
  max_page++;
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Create the level directory
-
-if(!directory_exists("courses"))
-{
- directory_create("courses");
 }
 </string>
           </argument>
@@ -281,10 +292,14 @@ if(current_page &lt; max_page &amp;&amp; gamepad_button_check_pressed(0, gp_shou
             <string>///Load Level
 if(fade &lt; 1)
     exit;  
-
-
-//Defined the file path to "filename" varable
-fname = "\courses\" + ds_list_find_value(file_list, file_choice + page_index0);
+    
+//The '.univ' file extension is PS Vita encrypted version of levels
+//Check if the selected level is a '.univ' or not.
+if(filename_ext(ds_list_find_value(file_list, file_choice + page_index0)) == ".univ")
+    //Defined the file path to "filename" varable
+    fname = "/courses/" + ds_list_find_value(file_list, file_choice + page_index0);
+else
+    fname = working_directory + "/courses/" + ds_list_find_value(file_list, file_choice + page_index0);
 
 
 if (!is_undefined(ds_list_find_value(file_list, file_choice + page_index0)))//Check if the selected level exist

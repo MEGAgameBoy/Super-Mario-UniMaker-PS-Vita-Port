@@ -188,7 +188,7 @@ global.level_name = "";
             <kind>1</kind>
             <string>///Create the level directory
 
-if(!directory_exists("courses"))
+if !directory_exists("courses")
 {
  directory_create("courses");
 }
@@ -215,7 +215,7 @@ if(!directory_exists("courses"))
           <argument>
             <kind>1</kind>
             <string>///Save level
-var fname = "\courses\" + global.level_name + ".unis";
+var fname = "/courses/" + global.level_name + ".univ";
 
 //If it as a name
 if(global.level_name != "")
