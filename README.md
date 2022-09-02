@@ -1,4 +1,4 @@
-# Super Mario UniMaker PS Vita Port v1.2.3.2
+# Super Mario UniMaker PS Vita Port v1.2.3.3
 This is the repo of the port of the Super Mario UniMaker for the PS Vita. Super Mario UniMaker is a fan game of Super Mario Maker by Nintendo, the original source code can be found [here](https://github.com/ninstar/UniMaker). You can download the PS Vita port on [VitaDB](https://vitadb.rinnegatamante.it/#/info/832).
 
 ## Credits
@@ -19,19 +19,13 @@ The PS Vita port use a '.univ' file format to save levels, these files are encry
 - **Code** - Gate, Hello Fangaming, NinStar, Ralphed
 - **Art** - Jessé Vieira, Kopejo, NinStar, Neweegee, Nicke, Sednaiur, Shikaternia
 
+## Changelog 1.2.3.3
+* Fixed crash on the level selector
+* Fixed the overselection bug on the level selector
+* Added a message when they are no custom/saved levels to show
+* Replaced web links by qr codes
+* Added full joystick support for editor/play modes
+
 ## Changelog 1.2.3.2
 * Fixed custom levels bug (levels don’t show)
 * Changed custom levels directory
-
-## Changelog 1.2.3.1
-* Added the ability to load customs levels
-* Added the ability to save your own levels
-* Added the ability to import and modify levels
-* Compiled using YYC for the best performances
-* You now need to use DPAD/face buttons for navigating the settings
-* The SELECT button now switch between edit and play mode
-* The START button do play on the main menu
-* The SELECT button do create on the main menu
-* Fixed the bug when Mario can't grab any items
-* Removed unnecessary Discord RPC components (do not work on PS Vita)
-* Source code release
