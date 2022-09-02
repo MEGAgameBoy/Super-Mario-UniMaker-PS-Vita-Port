@@ -3,7 +3,7 @@
   <Configs name="configs">
     <Config>Configs\Default</Config>
   </Configs>
-  <datafiles number="330" name="datafiles">
+  <datafiles number="343" name="datafiles">
     <datafile>
       <name>url.cfg</name>
       <exists>-1</exists>
@@ -811,6 +811,9 @@
         <sprite>sprites\spr_uni_filepicker</sprite>
         <sprite>sprites\spr_uni_title_background</sprite>
         <sprite>sprites\spr_uni_title_settings</sprite>
+        <sprite>sprites\spr_qrdiscord</sprite>
+        <sprite>sprites\spr_qrmanual</sprite>
+        <sprite>sprites\spr_qrwebsite</sprite>
       </sprites>
       <sprites name="Editor">
         <sprites name="Layout">
@@ -1505,6 +1508,7 @@
         <object>objects\obj_uni_title_foreground</object>
         <object>objects\obj_uni_title_background</object>
         <object>objects\obj_uni_settings</object>
+        <object>objects\obj_uni_qrcode</object>
         <object>objects\obj_uni_levelpicker</object>
       </objects>
       <objects name="Editor">

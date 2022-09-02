@@ -100,7 +100,8 @@ event_user(0);
           <argument>
             <kind>1</kind>
             <string>///Fechar menu
-if(!instance_exists(obj_uni_settings)){
+if(!instance_exists(obj_uni_settings) xor instance_exists(obj_uni_levelpicker))
+and(!instance_exists(obj_uni_qrcode)){
 with(obj_uni_layout_mainmenu_back){
     if(alarm[0] == -1)
     &amp;&amp;(alarm[1] == -1)

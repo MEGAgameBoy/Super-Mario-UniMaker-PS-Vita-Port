@@ -186,7 +186,7 @@ alarm[0] = 8
 
 //If Mario exists and down is being pressed
 if instance_exists(obj_mario)
-and keyboard_check(vk_down)
+and gamepad_button_check(0, gp_padd)
 {
 
     //Give Mario the correct horizontal speed and direction

@@ -76,8 +76,9 @@ y = view_yview[0]+178;
           <argument>
             <kind>1</kind>
             <string>///Trocar cores do layout
-if(!instance_exists(obj_uni_settings))
-instance_create(view_xview[0]-10,view_yview[0]+60,obj_uni_settings);
+if(!instance_exists(obj_uni_settings) xor instance_exists(obj_uni_levelpicker))
+and(!instance_exists(obj_uni_qrcode))
+    instance_create(view_xview[0]-10,view_yview[0]+60,obj_uni_settings);
 </string>
           </argument>
         </arguments>

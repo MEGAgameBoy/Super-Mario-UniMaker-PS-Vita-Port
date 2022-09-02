@@ -49,8 +49,9 @@ image_index = 1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if(!instance_exists(obj_uni_settings) xor instance_exists(obj_uni_levelpicker)){
-
+            <string>if(!instance_exists(obj_uni_settings) xor instance_exists(obj_uni_levelpicker))
+and(!instance_exists(obj_uni_qrcode))
+{
     ///Trocar cores do layout
     if(global.uni_layout_color = 15)
         global.uni_layout_color = 0;

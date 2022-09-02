@@ -75,8 +75,12 @@ y = view_yview[0]+178;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if(global.url_manual != "")
-    url_open(global.url_manual);
+            <string>if(!instance_exists(obj_uni_settings) xor instance_exists(obj_uni_levelpicker))
+and(!instance_exists(obj_uni_qrcode))
+{
+ instance_create(view_xview[0]+80,view_yview[0]+52,obj_uni_qrcode);
+ global.QR_value = 0;
+};
 </string>
           </argument>
         </arguments>

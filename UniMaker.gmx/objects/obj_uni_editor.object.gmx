@@ -904,7 +904,7 @@ else if (y &gt; view_yview[0]+view_hview[0]-108){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Navegação
+            <string>///Navigation
 if(global.uni_play == 0)
 &amp;&amp;(global.uni_editor_activity == true){
     
@@ -922,17 +922,25 @@ if(global.uni_play == 0)
     }
     
     //Up &amp; down
-    if((gamepad_button_check(0, gp_padu)) and global.is_menu == false)
+    if((gamepad_button_check(0, gp_padu)
+    || gamepad_axis_value(0, gp_axisrv) &lt; 0
+    || gamepad_axis_value(0, gp_axislv) &lt; 0) and global.is_menu == false)
         vspeed = -4-nav_spd;
-    else if((gamepad_button_check(0, gp_padd)) and global.is_menu == false)
+    else if((gamepad_button_check(0, gp_padd)
+    || gamepad_axis_value(0, gp_axisrv) &gt; 0
+    || gamepad_axis_value(0, gp_axislv) &gt; 0) and global.is_menu == false)
         vspeed = +4+nav_spd;
     else
         vspeed = 0;
     
     //Left &amp; right
-    if((gamepad_button_check(0, gp_padl)) and global.is_menu == false)
+    if((gamepad_button_check(0, gp_padl)
+    || gamepad_axis_value(0, gp_axisrh) &lt; 0
+    || gamepad_axis_value(0, gp_axislh) &lt; 0) and global.is_menu == false)
         hspeed = -4-nav_spd;
-    else if((gamepad_button_check(0, gp_padr)) and global.is_menu == false)
+    else if((gamepad_button_check(0, gp_padr)
+    || gamepad_axis_value(0, gp_axisrh) &gt; 0
+    || gamepad_axis_value(0, gp_axislh) &gt; 0) and global.is_menu == false)
         hspeed = +4+nav_spd;
     else
         hspeed = 0;

@@ -121,6 +121,28 @@ if global.shallihold &gt; 0
           </argument>
         </arguments>
       </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Set deadzone
+gamepad_set_axis_deadzone(0, 0.5);
+</string>
+          </argument>
+        </arguments>
+      </action>
     </event>
     <event eventtype="1" enumb="0">
       <action>
@@ -179,7 +201,7 @@ and stompstyle = 0
     //Tanooki Statue
     if global.powerup = cs_tanooki
     and not instance_exists(obj_spinner)
-    and gamepad_button_check(0, gp_padd)
+    and (gamepad_button_check(0, gp_padd) || gamepad_axis_value(0, gp_axislv) &gt; 0)
         show_debug_message("do not exsist for now");//instance_create(x,y,obj_statue)
 
     //If Mario is not ducking
@@ -1158,7 +1180,7 @@ if state &lt; 3
     {
 
         //Makes Mario duck
-        if gamepad_button_check(0, gp_padd)
+        if gamepad_button_check(0, gp_padd) || gamepad_axis_value(0, gp_axislv) &gt; 0
         and global.powerup != cs_small
         and global.powerup != cs_frog
         and holding = 0
@@ -1168,14 +1190,14 @@ if state &lt; 3
             isduck = 1
         }
         //Stops Mario from ducking
-        else if not gamepad_button_check(0, gp_padd)//DpadDown
+        else if not gamepad_button_check(0, gp_padd) || gamepad_axis_value(0, gp_axislv) &gt; 0//DpadDown
         and not collision_rectangle(bbox_left,bbox_top-16,bbox_right,bbox_top,obj_solid,1,0)
             isduck = 0
 
     }
 
     //Handles powerup specific projectiles, tail spinning, and statue morphing
-    if gamepad_button_check_pressed(0, gp_face3)//Square button
+    if gamepad_button_check_pressed(0, gp_face3) || gamepad_button_check_pressed(0, gp_face4)//Square/Triangle button
     and global.barrier = 0
         alarm[10] = 1
 
@@ -1342,8 +1364,8 @@ if invincible != -1
             <string>///Mario's wall jumping step event
 
 //Or if wall jump Mario moves away from the wall, or is not against a wall
-if ((direct = -1 and (gamepad_button_check(0, gp_padl) or not collision_rectangle(bbox_right,bbox_top+4,bbox_right+1,bbox_bottom-1,obj_solid,1,0))
-or direct = 1 and (gamepad_button_check(0, gp_padr) or not collision_rectangle(bbox_left-1,bbox_top+4,bbox_left,bbox_bottom-1,obj_solid,1,0))))
+if ((direct = -1 and ((gamepad_button_check(0, gp_padl) || gamepad_axis_value(0, gp_axislh) &lt; 0) or not collision_rectangle(bbox_right,bbox_top+4,bbox_right+1,bbox_bottom-1,obj_solid,1,0))
+or direct = 1 and ((gamepad_button_check(0, gp_padr) || gamepad_axis_value(0, gp_axislh) &gt; 0) or not collision_rectangle(bbox_left-1,bbox_top+4,bbox_left,bbox_bottom-1,obj_solid,1,0))))
 
 //Or if Mario reaches the floor
 or collision_rectangle(bbox_left,bbox_bottom+1,bbox_right,bbox_bottom+1,obj_solidtop,0,0)
@@ -1364,7 +1386,7 @@ or collision_rectangle(bbox_left,bbox_bottom+1,bbox_right,bbox_bottom+1,obj_slop
 vspeed = 1
 
 //Handle jumping
-if gamepad_button_check_pressed(0, gp_face1)
+if (gamepad_button_check_pressed(0, gp_face1) || gamepad_button_check_pressed(0, gp_face2))
 and disablecontrols = 0
 {
 
@@ -1377,7 +1399,7 @@ and disablecontrols = 0
     //Enable variable jumping
     jumpnow = 1
 
-    if(gamepad_button_check(0, gp_padu)){
+    if(gamepad_button_check(0, gp_padu) || gamepad_axis_value(0, gp_axislv) &lt; 0){
         stompstyle = 1;
     };
     //Switch to the jump state
@@ -1427,16 +1449,16 @@ if disablecontrols = 0
 {
 
     //Handle moving left
-    if gamepad_button_check(0, gp_padl)
-    and not gamepad_button_check(0, gp_padr)
+    if (gamepad_button_check(0, gp_padl) || gamepad_axis_value(0, gp_axislh) &lt; 0)
+    and not (gamepad_button_check(0, gp_padr) || gamepad_axis_value(0, gp_axislh) &gt; 0)
     {
         hspeed = -1
         direct = -1
     }
 
     //Handle moving right
-    else if gamepad_button_check(0, gp_padr)
-    and not gamepad_button_check(0, gp_padl)
+    else if (gamepad_button_check(0, gp_padr) || gamepad_axis_value(0, gp_axislh) &gt; 0)
+    and not (gamepad_button_check(0, gp_padl) || gamepad_axis_value(0, gp_axislh) &lt; 0)
     {
         hspeed = 1
         direct = 1
@@ -1447,13 +1469,13 @@ if disablecontrols = 0
         hspeed = 0
 
     //Handle moving up
-    if gamepad_button_check(0, gp_padu)
-    and not gamepad_button_check(0, gp_padd)
+    if (gamepad_button_check(0, gp_padu) || gamepad_axis_value(0, gp_axislv) &lt; 0)
+    and not (gamepad_button_check(0, gp_padd) || gamepad_axis_value(0, gp_axislv) &gt; 0)
         vspeed = -1
 
     //Handle moving down
-    else if gamepad_button_check(0, gp_padd)
-    and not gamepad_button_check(0, gp_padu)
+    else if (gamepad_button_check(0, gp_padd) || gamepad_axis_value(0, gp_axislv) &gt; 0)
+    and not (gamepad_button_check(0, gp_padu) || gamepad_axis_value(0, gp_axislv) &lt; 0)
         vspeed = 1
 
     //Stop vertical movement
@@ -1461,7 +1483,7 @@ if disablecontrols = 0
         vspeed = 0
 
     //Handle jumping off of a climbable surface
-    if gamepad_button_check_pressed(0, gp_face1)
+    if (gamepad_button_check_pressed(0, gp_face1) || gamepad_button_check_pressed(0, gp_face2))
     {
 
         //Jump
@@ -1499,7 +1521,7 @@ or collision_rectangle(bbox_left,bbox_bottom+1,bbox_right,bbox_bottom+1,obj_slop
 }
 
 //Smack the net to kill Net Koopas
-if gamepad_button_check_pressed(0, gp_face3)
+if (gamepad_button_check_pressed(0, gp_face3) || gamepad_button_check_pressed(0, gp_face4))
 and place_meeting(x,y,obj_climb_net)
 {
 
@@ -1547,8 +1569,8 @@ and holding = 0
     {
 
         //Swim upwards
-        if gamepad_button_check(0, gp_padu)
-        and not keyboard_check(vk_down)
+        if (gamepad_button_check(0, gp_padu) || gamepad_axis_value(0, gp_axislv) &lt; 0)
+        and not (gamepad_button_check(0, gp_padd) || gamepad_axis_value(0, gp_axislv) &gt; 0)
         {
 
             //Move up
@@ -1560,8 +1582,8 @@ and holding = 0
         }
 
         //Swim downwards
-        else if gamepad_button_check(0, gp_padd)
-        and not gamepad_button_check(0, gp_padu)
+        else if (gamepad_button_check(0, gp_padd) || gamepad_axis_value(0, gp_axislv) &gt; 0)
+        and not (gamepad_button_check(0, gp_padu) || gamepad_axis_value(0, gp_axislv) &lt; 0)
         {
 
             //Move down
@@ -1577,8 +1599,8 @@ and holding = 0
             vspeed = 0
 
         //Swim to the left
-        if gamepad_button_check(0, gp_padl)
-        and not gamepad_button_check(0, gp_padr)
+        if (gamepad_button_check(0, gp_padl) || gamepad_axis_value(0, gp_axislh) &lt; 0)
+        and not (gamepad_button_check(0, gp_padr) || gamepad_axis_value(0, gp_axislh) &gt; 0)
         {
 
             //Move left
@@ -1593,8 +1615,8 @@ and holding = 0
         }
 
         //Swim to the right
-        else if gamepad_button_check(0, gp_padr)
-        and not gamepad_button_check(0, gp_padl)
+        else if (gamepad_button_check(0, gp_padr) || gamepad_axis_value(0, gp_axislh) &gt; 0)
+        and not (gamepad_button_check(0, gp_padl) || gamepad_axis_value(0, gp_axislh) &lt; 0)
         {
 
             //Move right
@@ -1686,12 +1708,12 @@ else
         vspeed = 1.5
 
     //Handles swimming
-    if gamepad_button_check_pressed(0, gp_face1)
+    if (gamepad_button_check_pressed(0, gp_face1) || gamepad_button_check_pressed(0, gp_face2))
     and disablecontrols = 0
     {
 
         //If up is being pressed
-        if gamepad_button_check(0, gp_padu)
+        if (gamepad_button_check(0, gp_padu) || gamepad_axis_value(0, gp_axislv) &lt; 0)
         {
 
             //Swim higher
@@ -1708,7 +1730,7 @@ else
         }
 
         //Swim lower if down is being pressed
-        else if gamepad_button_check(0, gp_padd)
+        else if (gamepad_button_check(0, gp_padd) || gamepad_axis_value(0, gp_axislv) &gt; 0)
         and isduck = 0
             vspeed = -1
 
@@ -1725,8 +1747,8 @@ else
     }
 
     //Handles moving right
-    if gamepad_button_check(0, gp_padr)
-    and not gamepad_button_check(0, gp_padl)
+    if (gamepad_button_check(0, gp_padr) || gamepad_axis_value(0, gp_axislh) &gt; 0)
+    and not (gamepad_button_check(0, gp_padl) || gamepad_axis_value(0, gp_axislh) &lt; 0)
     and disablecontrols = 0
     and (isduck = 0 or state = 2)
     {
@@ -1744,8 +1766,8 @@ else
     }
 
     //Handles moving left
-    else if gamepad_button_check(0, gp_padl)
-    and not gamepad_button_check(0, gp_padr)
+    else if (gamepad_button_check(0, gp_padl) || gamepad_axis_value(0, gp_axislh) &lt; 0)
+    and not (gamepad_button_check(0, gp_padr) || gamepad_axis_value(0, gp_axislh) &gt; 0)
     and disablecontrols = 0
     and (isduck = 0 or state = 2)
     {
@@ -1831,7 +1853,7 @@ if not place_meeting(x,y,obj_swim)
         }
 
         //Jump out of the water if shift is being held
-        if gamepad_button_check(0, gp_face1)
+        if (gamepad_button_check(0, gp_face1) || gamepad_button_check(0, gp_face2))
         {
             vspeed = -3.85
             jumpnow = 1
@@ -1927,7 +1949,7 @@ and isfloating = 1
     hspeedmax = 1
 
 //If the run key is being held, go faster
-else if gamepad_button_check(0, gp_face3)
+else if (gamepad_button_check(0, gp_face3) || gamepad_button_check(0, gp_face4))
     hspeedmax = 3 //&lt;-- aqui é 3!!
 
 //Otherwise, move slower
@@ -1935,7 +1957,7 @@ else
     hspeedmax = 1.5
 
 //Handles Mario's jumping
-if gamepad_button_check_pressed(0, gp_face1)
+if (gamepad_button_check_pressed(0, gp_face1) || gamepad_button_check_pressed(0, gp_face2))
 and disablecontrols = 0
 
 //Make sure that Mario can jump
@@ -1943,7 +1965,7 @@ and ((jumpnow = 0
 and state &lt; 2)
 
 //Allow Mario to jump off of Yoshi or a shoe while in midair
-or (gamepad_button_check(0, gp_padu)
+or ((gamepad_button_check(0, gp_padu) || gamepad_axis_value(0, gp_axislv) &lt; 0)
 and isduck = 0
 and global.yoshi &gt; 0)
 
@@ -1983,7 +2005,7 @@ and holding = 0))
     }
 
     //Make Mario spin jump
-    if (gamepad_button_check(0, gp_padu)
+    if ((gamepad_button_check(0, gp_padu) || gamepad_axis_value(0, gp_axislv) &lt; 0)
     and isduck = 0
     and (holding = 0 or global.yoshi &gt; 0))
     or state = 2
@@ -2022,7 +2044,7 @@ and holding = 0))
 }
 
 //Check if Mario should still be variable jumping
-if gamepad_button_check_released(0, gp_face1)
+if (gamepad_button_check_released(0, gp_face1) || gamepad_button_check_released(0, gp_face2))
 and jumpnow = 1
     jumpnow = 2
 
@@ -2047,8 +2069,8 @@ else
 {
 
     //Handles moving right
-    if gamepad_button_check(0, gp_padr)
-    and not gamepad_button_check(0, gp_padl)
+    if (gamepad_button_check(0, gp_padr) || gamepad_axis_value(0, gp_axislh) &gt; 0)
+    and not (gamepad_button_check(0, gp_padl) || gamepad_axis_value(0, gp_axislh) &lt; 0)
     and disablecontrols = 0
     {
 
@@ -2081,8 +2103,8 @@ else
     }
 
     //Handles moving left
-    else if gamepad_button_check(0, gp_padl)
-    and not gamepad_button_check(0, gp_padr)
+    else if (gamepad_button_check(0, gp_padl) || gamepad_axis_value(0, gp_axislh) &lt; 0)
+    and not (gamepad_button_check(0, gp_padr) || gamepad_axis_value(0, gp_axislh) &gt; 0)
     and disablecontrols = 0
     {
 
@@ -2202,13 +2224,13 @@ or statedelay &gt; 0
             gravity = gravity/2
 
             //Allow Mario to charge downwards
-            if gamepad_button_check(0, gp_padd)
+            if (gamepad_button_check(0, gp_padd) || gamepad_axis_value(0, gp_axislv) &gt; 0)
                 vspeed = 4
             else if vspeed &gt; 1
                 vspeed = 1
 
             //Play the sound when he charges downwards
-            if gamepad_button_check_pressed(0, gp_padd)
+            if (gamepad_button_check_pressed(0, gp_padd) || gamepad_axis_value(0, gp_axislv) &gt; 0)
                 audio_playstop_sound(snd_spin,0,0)
 
         }
@@ -2219,7 +2241,8 @@ or statedelay &gt; 0
 
 //Makes Mario start climbing
 if place_meeting(x,y,obj_climb)
-and (gamepad_button_check(0, gp_padu) or (gamepad_button_check(0, gp_padd) and state = 2))
+and ((gamepad_button_check(0, gp_padu) || gamepad_axis_value(0, gp_axislv) &lt; 0)
+or ((gamepad_button_check(0, gp_padd) || gamepad_axis_value(0, gp_axislv) &gt; 0) and state = 2))
 and holding = 0
 and disablecontrols = 0
 {
@@ -2246,7 +2269,7 @@ and disablecontrols = 0
 
 }
 
-if gamepad_button_check_pressed(0, gp_padd)
+if (gamepad_button_check_pressed(0, gp_padd) || gamepad_axis_value(0, gp_axislv) &gt; 0)
 and disablecontrols = 0
 and holding = 0
 {
@@ -2280,7 +2303,7 @@ and global.yoshi = 0
 
     //Handles leaf and tanooki Mario's flying
     if (global.powerup = cs_leaf or global.powerup = cs_tanooki)
-    and gamepad_button_check_pressed(0, gp_face1)
+    and (gamepad_button_check_pressed(0, gp_face1) || gamepad_button_check_pressed(0, gp_face2))
     and jumpnow != 1
     {
 
@@ -2305,10 +2328,10 @@ and global.yoshi = 0
     {
 
         //If the direction Mario is facing is pressed, while a wall is in front of him
-        if (gamepad_button_check(0, gp_padr)
+        if ((gamepad_button_check(0, gp_padr) || gamepad_axis_value(0, gp_axislh) &gt; 0)
         and collision_rectangle(bbox_right,bbox_top+4,bbox_right+1,bbox_bottom-1,obj_solid,1,0)
         and direct = 1)
-        or (gamepad_button_check(0, gp_padl)
+        or ((gamepad_button_check(0, gp_padl) || gamepad_axis_value(0, gp_axislh) &lt; 0)
         and collision_rectangle(bbox_left-1,bbox_top+4,bbox_left,bbox_bottom-1,obj_solid,1,0)
         and direct = -1)
         {
@@ -2345,7 +2368,7 @@ and global.yoshi = 0
 
     //Handles carrot and bee Mario's floating
     if (global.powerup = cs_carrot or (global.powerup = cs_bee and beefly &lt; 128))
-    and gamepad_button_check(0, gp_face1)
+    and (gamepad_button_check(0, gp_face1) || gamepad_button_check(0, gp_face2))
     {
 
         //If Mario is moving downwards
@@ -2469,7 +2492,7 @@ x = round(x*1000)/1000;
             <string>///Make Mario bounce off of something
 
 //Enable variable jumping if shift is held down
-if gamepad_button_check(0, gp_face1)
+if (gamepad_button_check(0, gp_face1) || gamepad_button_check(0, gp_face2))
     jumpnow = 1
 else
     jumpnow = 2

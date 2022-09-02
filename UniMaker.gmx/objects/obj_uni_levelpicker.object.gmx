@@ -101,24 +101,22 @@ fname = "";
             <string>///List files
 
 //list saved levels
-var lister = file_find_first("/courses/*.univ", fa_directory);
-while (lister != "")
+var lister_univ = file_find_first("/courses/*.univ", fa_directory);
+while (lister_univ != "")
 {
- ds_list_add(file_list, + lister)//add the current file to the list
+ ds_list_add(file_list, + lister_univ)//add the current file to the list
  file_index++;//index is for draw event
- lister = file_find_next();//read next file
+ lister_univ = file_find_next();//read next file
 }
 file_find_close();//finish
 
-show_debug_message(working_directory);
-
 //List customs levels
-var lister = file_find_first(working_directory + "/courses/*.unis", fa_directory);
-while (lister != "")
+var lister_unis = file_find_first(working_directory + "/courses/*.unis", fa_directory);
+while (lister_unis != "")
 {
- ds_list_add(file_list, + lister)
+ ds_list_add(file_list, + lister_unis)
  file_index++;
- lister = file_find_next();
+ lister_unis = file_find_next();
 }
 file_find_close();//finish
 
@@ -127,6 +125,10 @@ for(var i=9; i &lt; file_index; i+=9)
 {
  max_page++;
 }
+
+//If there is no file
+if(ds_list_empty(file_list))
+    file_choice = -1;
 </string>
           </argument>
         </arguments>
@@ -151,13 +153,11 @@ for(var i=9; i &lt; file_index; i+=9)
             <kind>1</kind>
             <string>///Quit menu
 if(fade &lt;= 0){
-
     fade = 0;
     instance_destroy();
     alarm[1] = -1;
 };
 else{
-
     fade -= 0.10;
     alarm[1] = 1;
 };
@@ -226,46 +226,56 @@ if(global.editor = true)
             <string>///Controles
 
 //CONFIRM
-if(gamepad_button_check_pressed(0, gp_face1))
+if(gamepad_button_check_pressed(0, gp_face1) &amp;&amp; file_choice != -1)
     event_user(3);
-
-//Dpad
-if(gamepad_button_check_pressed(0, gp_padd) &amp;&amp; file_choice &lt; 8 )
-    file_choice++;
-    
-if(gamepad_button_check_pressed(0, gp_padu) &amp;&amp; file_choice &gt; 0 )
-    file_choice--;
 
 //Return button  
 if(gamepad_button_check_pressed(0, gp_face2) &amp;&amp; alarm[0] == -1 &amp;&amp; alarm[1] == -1)
     alarm[1] = 1;
+    
+if(file_choice != -1)
+{
+ //Dpad
+ //Down
+ if(gamepad_button_check_pressed(0, gp_padd) &amp;&amp;
+ (file_choice &lt; ds_list_size(file_list)/page_index0 &amp;&amp; file_choice &lt; 8) &amp;&amp; max_page != 1)
+     file_choice++;
+ else if (gamepad_button_check_pressed(0, gp_padd) &amp;&amp; max_page == 1 &amp;&amp; file_choice &lt; (ds_list_size(file_list) - 1))
+     file_choice++;
 
-//pages
-if(current_page &gt; 1 &amp;&amp; gamepad_button_check_pressed(0, gp_shoulderl))
-{
- current_page--;
- page_index0 -=9;
- page_index1 -=9;
- page_index2 -=9;
- page_index3 -=9;
- page_index4 -=9;
- page_index5 -=9;
- page_index6 -=9;
- page_index7 -=9;
- page_index8 -=9;
-}
-if(current_page &lt; max_page &amp;&amp; gamepad_button_check_pressed(0, gp_shoulderr))
-{
- current_page++;
- page_index0 +=9;
- page_index1 +=9;
- page_index2 +=9;
- page_index3 +=9;
- page_index4 +=9;
- page_index5 +=9;
- page_index6 +=9;
- page_index7 +=9;
- page_index8 +=9;
+ //Up    
+ if(gamepad_button_check_pressed(0, gp_padu) &amp;&amp; file_choice &gt; 0 )
+    file_choice--;
+
+ //pages
+ if(current_page &gt; 1 &amp;&amp; gamepad_button_check_pressed(0, gp_shoulderl))
+ {
+  file_choice = 0;
+  current_page--;
+  page_index0 -=9;
+  page_index1 -=9;
+  page_index2 -=9;
+  page_index3 -=9;
+  page_index4 -=9;
+  page_index5 -=9;
+  page_index6 -=9;
+  page_index7 -=9;
+  page_index8 -=9;
+ }
+ if(current_page &lt; max_page &amp;&amp; gamepad_button_check_pressed(0, gp_shoulderr))
+ {
+  file_choice = 0;
+  current_page++;
+  page_index0 +=9;
+  page_index1 +=9;
+  page_index2 +=9;
+  page_index3 +=9;
+  page_index4 +=9;
+  page_index5 +=9;
+  page_index6 +=9;
+  page_index7 +=9;
+  page_index8 +=9;
+ }
 }
 </string>
           </argument>
@@ -302,45 +312,42 @@ else
     fname = working_directory + "/courses/" + ds_list_find_value(file_list, file_choice + page_index0);
 
 
-if (!is_undefined(ds_list_find_value(file_list, file_choice + page_index0)))//Check if the selected level exist
+if(global.editor == true)
 {
- if(global.editor == true)
+ //load in the editor
+ 
+ //Destroy objects
+ with(obj_uni_parent_save)
+    instance_destroy();
+        
+ audio_stop_all();
+ scr_uni_loadcopy(fname);
+ scr_uni_level_load(fname);
+ scr_uni_custom(fname,0);
+ 
+ //Clean memory
+ cleanmem();   
+ 
+ //Add to the editor
+ with(obj_uni_editor)
  {
-  //load in the editor
-  
-  //Destroy objects
-  with(obj_uni_parent_save)
-     instance_destroy();
-         
-  audio_stop_all();
-  scr_uni_loadcopy(fname);
-  scr_uni_level_load(fname);
-  scr_uni_custom(fname,0);
-  
-  //Clean memory
-  cleanmem();   
-  
-  //Add to the editor
-  with(obj_uni_editor)
-  {
-   event_user(6);
-   event_user(9);
-  }
-  
-  //Play sound
-  audio_play_sound(snd_uni_robot_saveload,0,false);
-  
-  alarm[1] = 1;
+  event_user(6);
+  event_user(9);
  }
- else
- { 
-  //load
-  scr_uni_loadcopy(fname);
-  audio_stop_all();
-  global.uni_loadlevel = fname;
-  room_goto(rm_uni_player);
-  lives = 3;
- }
+ 
+ //Play sound
+ audio_play_sound(snd_uni_robot_saveload,0,false);
+ 
+ alarm[1] = 1;
+}
+else
+{ 
+ //load
+ scr_uni_loadcopy(fname);
+ audio_stop_all();
+ global.uni_loadlevel = fname;
+ room_goto(rm_uni_player);
+ lives = 3;
 }
 </string>
           </argument>
@@ -367,6 +374,10 @@ if (!is_undefined(ds_list_find_value(file_list, file_choice + page_index0)))//Ch
             <string>///Draw evrething
 //reused settings code
 
+//Background
+if(room == rm_uni_title)
+    draw_sprite_tiled_ext(spr_uni_layout_part_submenu,0,0,0,1,1,c_white,fade);
+
 //Parameters
 draw_sprite_ext(spr_uni_filepicker,0,x,y,1,1,0,c_white,fade);
 draw_set_font(global.font);
@@ -374,6 +385,10 @@ draw_set_halign(fa_left);
 draw_set_alpha(fade);
 
 //-----------------PAGE1------------------
+
+//There is no files
+if(file_choice == -1)
+    draw_text(x+10,y+13, "There is no saved/custom#level(s) to show");
 
 //0
 if(file_choice == 0)

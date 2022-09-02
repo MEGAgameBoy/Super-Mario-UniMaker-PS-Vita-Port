@@ -50,8 +50,10 @@ image_index = 2;
           <argument>
             <kind>1</kind>
             <string>if(!instance_exists(obj_uni_settings) xor instance_exists(obj_uni_levelpicker))
+and(!instance_exists(obj_uni_qrcode))
 {
- url_open("https://github.com/ninstar/UniMaker/wiki");
+ instance_create(view_xview[0]+80,view_yview[0]+52,obj_uni_qrcode);
+ global.QR_value = 0;
 };
 </string>
           </argument>

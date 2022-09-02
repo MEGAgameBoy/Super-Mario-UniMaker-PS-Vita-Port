@@ -154,6 +154,7 @@ if(gamepad_button_check_pressed(0, gp_start))
  and alarm[0] = -1
  and alarm[1] = -1
  and(!instance_exists(obj_uni_settings) xor instance_exists(obj_uni_levelpicker))
+and(!instance_exists(obj_uni_qrcode))
  {
   if (click = 0)
   {
@@ -196,6 +197,7 @@ and (rot2 = 0)
 and alarm[0] = -1
 and alarm[1] = -1
 and(!instance_exists(obj_uni_settings) xor instance_exists(obj_uni_levelpicker))
+and(!instance_exists(obj_uni_qrcode))
 {
  if (click = 0)
  {

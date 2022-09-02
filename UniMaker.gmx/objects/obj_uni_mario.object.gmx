@@ -182,11 +182,17 @@ if(global.uni_editor_activity == 1){
        {
        if global.uni_play = 0 and global.is_menu == false
        {
+       
+       gamepad_set_axis_deadzone(0, 0.5);
        //Up &amp; down
-        if(gamepad_button_check(0, gp_padr)){
+        if(gamepad_button_check(0, gp_padr)
+        || gamepad_axis_value(0, gp_axisrh) &gt; 0
+        || gamepad_axis_value(0, gp_axislh) &gt; 0){
          hspeed = +4;
         }
-        else if (gamepad_button_check(0, gp_padl)){
+        else if (gamepad_button_check(0, gp_padl)
+        || gamepad_axis_value(0, gp_axisrh) &lt; 0
+        || gamepad_axis_value(0, gp_axislh) &lt; 0){
          hspeed = -4;
         }
         else{
@@ -194,10 +200,14 @@ if(global.uni_editor_activity == 1){
         }
         
        //Left &amp; right
-        if(gamepad_button_check(0, gp_padd)){
+        if(gamepad_button_check(0, gp_padd)
+        || gamepad_axis_value(0, gp_axisrv) &gt; 0
+        || gamepad_axis_value(0, gp_axislv) &gt; 0){
          vspeed = +4;
         }
-        else if(gamepad_button_check(0, gp_padu)){
+        else if(gamepad_button_check(0, gp_padu)
+        || gamepad_axis_value(0, gp_axisrv) &lt; 0
+        || gamepad_axis_value(0, gp_axislv) &lt; 0){
          vspeed = -4;
         }
         else{

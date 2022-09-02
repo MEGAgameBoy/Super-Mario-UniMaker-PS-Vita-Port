@@ -52,6 +52,7 @@ image_index = 0;
             <kind>1</kind>
             <string>///Show he levelpicker
 if(!instance_exists(obj_uni_settings) xor instance_exists(obj_uni_levelpicker))
+and(!instance_exists(obj_uni_qrcode))
     instance_create(view_xview[0]+80,view_yview[0]+52,obj_uni_levelpicker);
 </string>
           </argument>
