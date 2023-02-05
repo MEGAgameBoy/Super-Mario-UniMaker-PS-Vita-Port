@@ -446,7 +446,7 @@
     <option_ps4_texture_page>2048</option_ps4_texture_page>
     <option_psvita_build_version>3</option_psvita_build_version>
     <option_psvita_fronttouch>-1</option_psvita_fronttouch>
-    <option_psvita_interpolate>-1</option_psvita_interpolate>
+    <option_psvita_interpolate>0</option_psvita_interpolate>
     <option_psvita_interpolation>true</option_psvita_interpolation>
     <option_psvita_major_version>1</option_psvita_major_version>
     <option_psvita_minor_version>2</option_psvita_minor_version>

@@ -19,13 +19,12 @@ The PS Vita port use a '.univ' file format to save levels, these files are encry
 - **Code** - Gate, Hello Fangaming, NinStar, Ralphed
 - **Art** - Jessé Vieira, Kopejo, NinStar, Neweegee, Nicke, Sednaiur, Shikaternia
 
+## Changelog 1.2.3.4
+* Fixed level selection bug
+
 ## Changelog 1.2.3.3
 * Fixed crash on the level selector
 * Fixed the overselection bug on the level selector
 * Added a message when they are no custom/saved levels to show
 * Replaced web links by qr codes
 * Added full joystick support for editor/play modes
-
-## Changelog 1.2.3.2
-* Fixed custom levels bug (levels don’t show)
-* Changed custom levels directory

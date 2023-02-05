@@ -237,11 +237,8 @@ if(file_choice != -1)
 {
  //Dpad
  //Down
- if(gamepad_button_check_pressed(0, gp_padd) &amp;&amp;
- (file_choice &lt; ds_list_size(file_list)/page_index0 &amp;&amp; file_choice &lt; 8) &amp;&amp; max_page != 1)
-     file_choice++;
- else if (gamepad_button_check_pressed(0, gp_padd) &amp;&amp; max_page == 1 &amp;&amp; file_choice &lt; (ds_list_size(file_list) - 1))
-     file_choice++;
+ if(gamepad_button_check_pressed(0, gp_padd) &amp;&amp; file_choice &lt; 8 &amp;&amp; !is_undefined(ds_list_find_value(file_list, file_choice + page_index0 + 1)))
+    file_choice++;
 
  //Up    
  if(gamepad_button_check_pressed(0, gp_padu) &amp;&amp; file_choice &gt; 0 )
