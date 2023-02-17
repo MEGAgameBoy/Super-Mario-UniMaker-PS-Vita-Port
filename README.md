@@ -11,7 +11,13 @@ Port by [MEGAgameBoy](https://github.com/MEGAgameBoy)
 ## Note
 For installing custom levels you need to take the '.unis' file and put it in the ux0:app/SMUM30622/games/courses/ folder.
 Due to PS Vita limitation yon cannot share the levels created on the PS Vita.
-The PS Vita port use a '.univ' file format to save levels, these files are encrypted by the PS Vita this is the reason why you cannot share them, you can only save it to play/modify them later.
+The PS Vita port use a '.univ' file format to save levels. For sharing/exporting levels, see below.
+
+## Sharing/Exporting levels
+For sharing/exporting levels you will need to decrypt the '.univ', the best way to do that is by using [Apollo Save Tool](https://github.com/bucanero/apollo-vita/releases) for PS Vita by [bucanero](https://github.com/bucanero).
+* First you need to go to Apollo Save Tool and go to Int saves > Super Mario UniMaker > Export decrypted save file then chose the level that you want to export and press X.
+* Next your level will be exported in ux0:data/apollo/00/SMUM30622/courses/ you can now transfer your level to a PC using VitaShell USB/FTP connection.
+* Finaly make sure to rename file extension form '.univ' to '.unis'.
 
 ## Original Credits
 
